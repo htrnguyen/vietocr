@@ -190,6 +190,7 @@ class Trainer:
         pred_sents = []
         actual_sents = []
         img_files = []
+        prob = []
 
         for batch in self.valid_gen:
             batch = self.batch_to_device(batch)
