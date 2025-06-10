@@ -1,0 +1,12 @@
+// Place your key bindings in this file to override the defaults
+[
+    {
+        "key": "ctrl+i",
+        "command": "composerMode.agent"
+    },
+    // Toggle terminal - open if closed, hide if open
+    {
+        "key": "ctrl+j",
+        "command": "workbench.action.terminal.toggle"
+    }
+]

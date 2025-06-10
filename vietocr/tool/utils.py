@@ -1,10 +1,11 @@
 import os
-import gdown
-import yaml
-import numpy as np
-import uuid
-import requests
 import tempfile
+import uuid
+
+import gdown
+import numpy as np
+import requests
+import yaml
 from tqdm import tqdm
 
 
@@ -48,11 +49,11 @@ def compute_accuracy(ground_truth, predictions, mode="full_sequence"):
     :param predictions:
     :param display: Whether to print values to stdout
     :param mode: if 'per_char' is selected then
-                 single_label_accuracy = correct_predicted_char_nums_of_single_sample / single_label_char_nums
-                 avg_label_accuracy = sum(single_label_accuracy) / label_nums
-                 if 'full_sequence' is selected then
-                 single_label_accuracy = 1 if the prediction result is exactly the same as label else 0
-                 avg_label_accuracy = sum(single_label_accuracy) / label_nums
+                single_label_accuracy = correct_predicted_char_nums_of_single_sample / single_label_char_nums
+                avg_label_accuracy = sum(single_label_accuracy) / label_nums
+                if 'full_sequence' is selected then
+                single_label_accuracy = 1 if the prediction result is exactly the same as label else 0
+                avg_label_accuracy = sum(single_label_accuracy) / label_nums
     :return: avg_label_accuracy
     """
     if mode == "per_char":

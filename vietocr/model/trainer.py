@@ -1,29 +1,26 @@
-from vietocr.optim.optim import ScheduledOptim
-from vietocr.optim.labelsmoothingloss import LabelSmoothingLoss
-from torch.optim import Adam, SGD, AdamW
-from torch import nn
-from vietocr.tool.translate import build_model
-from vietocr.tool.translate import translate, batch_translate_beam_search
-from vietocr.tool.utils import download_weights
-from vietocr.tool.logger import Logger
-from vietocr.loader.aug import ImgAugTransformV2
-
-import yaml
-import torch
-from vietocr.loader.dataloader_v1 import DataGen
-from vietocr.loader.dataloader import OCRDataset, ClusterRandomSampler, Collator
-from torch.utils.data import DataLoader
-from einops import rearrange
-from torch.optim.lr_scheduler import CosineAnnealingLR, CyclicLR, OneCycleLR
-
-import torchvision
-
-from vietocr.tool.utils import compute_accuracy
-from PIL import Image
-import numpy as np
 import os
-import matplotlib.pyplot as plt
 import time
+
+import matplotlib.pyplot as plt
+import numpy as np
+import torch
+import torchvision
+import yaml
+from einops import rearrange
+from PIL import Image
+from torch import nn
+from torch.optim import SGD, Adam, AdamW
+from torch.optim.lr_scheduler import CosineAnnealingLR, CyclicLR, OneCycleLR
+from torch.utils.data import DataLoader
+
+from vietocr.loader.aug import ImgAugTransformV2
+from vietocr.loader.dataloader import ClusterRandomSampler, Collator, OCRDataset
+from vietocr.loader.dataloader_v1 import DataGen
+from vietocr.optim.labelsmoothingloss import LabelSmoothingLoss
+from vietocr.optim.optim import ScheduledOptim
+from vietocr.tool.logger import Logger
+from vietocr.tool.translate import batch_translate_beam_search, build_model, translate
+from vietocr.tool.utils import compute_accuracy, download_weights
 
 
 class Trainer:
@@ -170,7 +167,8 @@ class Trainer:
                 )
 
                 outputs = self.model(img, tgt_input, tgt_padding_mask)
-                #                loss = self.criterion(rearrange(outputs, 'b t v -> (b t) v'), rearrange(tgt_output, 'b o -> (b o)'))
+                # loss = self.criterion(rearrange(outputs, 'b t v -> (b t) v'), rearrange(tgt_output, 'b o -> (b o)'))
+                # loss = self.criterion(outputs, tgt_output)
 
                 outputs = outputs.flatten(0, 1)
                 tgt_output = tgt_output.flatten()
