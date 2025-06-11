@@ -172,14 +172,25 @@ class Trainer:
 
                 outputs = outputs.flatten(0, 1)
                 tgt_output = tgt_output.flatten()
+
+                if torch.isnan(outputs).any():
+                    print(f"Output contain NaN at step {step}")
+                if torch.isnan(tgt_output).any():
+                    print(f"tgt_output contain NaN at step {step}")
+
                 loss = self.criterion(outputs, tgt_output)
+
+                if torch.isnan(loss):
+                    print(f"loss contain NaN at step {step}")
+                    continue
 
                 total_loss.append(loss.item())
 
                 del outputs
                 del loss
 
-        total_loss = np.mean(total_loss)
+        # total_loss = np.mean(total_loss)
+        total_loss = np.mean(total_loss) if len(total_loss) > 0 else float("inf")
         self.model.train()
 
         return total_loss
@@ -287,7 +298,7 @@ class Trainer:
         optim = ScheduledOptim(
             Adam(self.model.parameters(), betas=(0.9, 0.98), eps=1e-09),
             self.config["transformer"]["d_model"],
-            **self.config["optimizer"]
+            **self.config["optimizer"],
         )
 
         self.optimizer.load_state_dict(checkpoint["optimizer"])
@@ -376,7 +387,7 @@ class Trainer:
             collate_fn=collate_fn,
             shuffle=False,
             drop_last=False,
-            **self.config["dataloader"]
+            **self.config["dataloader"],
         )
 
         return gen
