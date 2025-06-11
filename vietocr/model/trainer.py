@@ -173,16 +173,9 @@ class Trainer:
                 outputs = outputs.flatten(0, 1)
                 tgt_output = tgt_output.flatten()
 
-                if torch.isnan(outputs).any():
-                    print(f"Output contain NaN at step {step}")
-                if torch.isnan(tgt_output).any():
-                    print(f"tgt_output contain NaN at step {step}")
-
-                loss = self.criterion(outputs, tgt_output)
-
-                if torch.isnan(loss):
-                    print(f"loss contain NaN at step {step}")
-                    continue
+                print("Step:", step)
+                print("tgt_output shape:", tgt_output.shape)
+                print("Unique tokens in tgt_output:", torch.unique(tgt_output))
 
                 total_loss.append(loss.item())
 
@@ -190,7 +183,11 @@ class Trainer:
                 del loss
 
         # total_loss = np.mean(total_loss)
-        total_loss = np.mean(total_loss) if len(total_loss) > 0 else float("inf")
+        if len(total_loss) == 0:
+            print("⚠️ Không có batch nào hợp lệ trong validate!")
+            return float('nan')
+
+        total_loss = np.mean(total_loss)
         self.model.train()
 
         return total_loss
