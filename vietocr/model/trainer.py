@@ -70,7 +70,7 @@ class Trainer:
         #            **config['optimizer'])
 
         self.criterion = LabelSmoothingLoss(
-            len(self.vocab), padding_idx=self.vocab.pad, smoothing=0.1
+            len(self.vocab), padding_idx=0, smoothing=0.1
         )
 
         transforms = None
