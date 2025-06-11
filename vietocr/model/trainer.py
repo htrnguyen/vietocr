@@ -168,7 +168,7 @@ class Trainer:
 
                 outputs = self.model(img, tgt_input, tgt_padding_mask)
                 # loss = self.criterion(rearrange(outputs, 'b t v -> (b t) v'), rearrange(tgt_output, 'b o -> (b o)'))
-                # loss = self.criterion(outputs, tgt_output)
+                loss = self.criterion(outputs, tgt_output)
 
                 outputs = outputs.flatten(0, 1)
                 tgt_output = tgt_output.flatten()
@@ -185,7 +185,7 @@ class Trainer:
         # total_loss = np.mean(total_loss)
         if len(total_loss) == 0:
             print("⚠️ Không có batch nào hợp lệ trong validate!")
-            return float('nan')
+            return float("nan")
 
         total_loss = np.mean(total_loss)
         self.model.train()
