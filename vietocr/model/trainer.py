@@ -151,6 +151,9 @@ class Trainer:
                     self.save_weights(self.export_weights)
                     best_acc = acc_full_seq
 
+        print(f"Training completed. Saving model to {self.export_weights}")
+        self.save_weights(self.export_weights)
+
     def validate(self):
         self.model.eval()
 
